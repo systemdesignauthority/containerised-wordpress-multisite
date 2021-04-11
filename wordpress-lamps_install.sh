@@ -12,22 +12,22 @@ function genpw {
 #echo "This program will setup wordpress-lamps for one domain eg: yourdomain.com or yourdomain.co.uk"
 #echo -n "Enter you Domain and press [ENTER]: "
 #read domain
-domain="systemdesignauthority.com"
+domain="systemsdesignauthority.co.uk"
 
 # Ensure given domain is resolving to this computer's public IP
-#thisPublicIP=$(dig @resolver4.opendns.com myip.opendns.com +short)
-#thisDomainARecord=$(dig +short $domain)
-#if [ "$thisPublicIP" != "$thisDomainARecord" ]
-#    then
-#        echo $domain "does not resolve to this computer's public IP Address. More details in this blog. Setup can not continue."
-#    exit
-#fi
+thisPublicIP=$(dig @resolver4.opendns.com myip.opendns.com +short)
+thisDomainARecord=$(dig +short $domain)
+if [ "$thisPublicIP" != "$thisDomainARecord" ]
+    then
+        echo $domain "does not resolve to this computer's public IP Address. More details in this blog. Setup can not continue."
+    exit
+fi
 
 # Generate .env file
-#rm -f .env
-#echo "MYSQL_ROOT_PASSWORD="$(genpw) >> .env
-#echo "MYSQL_USER="$(genpw) >> .env
-#echo "MYSQL_PASSWORD="$(genpw) >> .env
+ rm -f .env
+ echo "MYSQL_ROOT_PASSWORD="$(genpw) >> .env
+ echo "MYSQL_USER="$(genpw) >> .env
+ echo "MYSQL_PASSWORD="$(genpw) >> .env
 #echo "DOMAIN="$domain >> .env
 
 # Ensure port forwarding is implemented by requesting certificates using certbot
