@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  webserver:
+    image: nginx
+    container_name: webserver
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - wordpress:/var/www/html
+      - ./nginx-conf:/etc/nginx/conf.d
+      - certbot-etc:/etc/letsencrypt
+    networks:
+      - app-network
+
+  certbot:
+    depends_on:
+      - webserver
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - certbot-etc:/etc/letsencrypt
+      - wordpress:/var/www/html
+    command: certonly --webroot --webroot-path=/var/www/html --email admin@this_domain --agree-tos --no-eff-email --staging -d this_domain -d www.this_domain
+
+volumes:
+  certbot-etc:
+
+networks:
+  app-network:
+    driver: bridge
