@@ -8,7 +8,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - webserver-var:/var/www/html
+      - wordpress:/var/www/html
       - ./nginx-conf:/etc/nginx/conf.d
       - certbot-etc:/etc/letsencrypt
     networks:
@@ -21,14 +21,11 @@ services:
     container_name: certbot
     volumes:
       - certbot-etc:/etc/letsencrypt
-      - ./etc/letsencrypt/live:/etc/letsencrypt/live
-      - ./var/log/letsencrypt:/var/log/letsencrypt/
-      - webserver-var:/var/www/html
-    command: certonly --webroot --webroot-path=/var/www/html --email admin@this_domain --agree-tos --no-eff-email --staging -d this_domain -d www.this_domain
+      - wordpress:/var/www/html
+    command: certonly --webroot --webroot-path=/var/www/html --email admin@systemsdesignauthority.co.uk --agree-tos --no-eff-email --staging -d systemsdesignauthority.co.uk -d www.systemsdesignauthority.co.uk
 
 volumes:
   certbot-etc:
-  webserver-var:
 
 networks:
   app-network:

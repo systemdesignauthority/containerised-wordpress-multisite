@@ -19,7 +19,7 @@ thisPublicIP=$(dig @resolver4.opendns.com myip.opendns.com +short)
 thisDomainARecord=$(dig +short $domain)
 if [ "$thisPublicIP" != "$thisDomainARecord" ]
     then
-        echo $domain "does not resolve to this computer's public IP Address. More details in this blog. Setup can not continue."
+        echo $domain "does not resolve to this computer's public IP Address. Please see the DNS A record section in this blog. Setup cannot continue."
     exit
 fi
 
@@ -38,10 +38,18 @@ sed "s/this_domain/$domain/g" docker-compose_staging.yml > docker-compose.yml
 # nginx
 rm -f nginx-conf/nginx.conf
 sed "s/this_domain/$domain/g" nginx-conf/nginx_staging.conf > nginx-conf/nginx.conf
-
-
-
+# Launch nginx and certbot
+docker-compose up -d
+# When certbot exits
+until [ "$(docker-compose ps certbot | grep -o Exit)" = "Exit" ]
+do
+    sleep 5 
+done
+# Check status of the certs
+if [ "$(cat var/log/letsencrypt/letsencrypt.log | grep OCSPCertStatus.GOOD | grep -o $domain)" != "$domain" ]
+    then
+        echo $domain "cannot be reached on this computer from the internet. Please see the port forwarding section in this blog. Setup cannot continue."
+    exit
+fi
 
 echo "the end"
-
-
