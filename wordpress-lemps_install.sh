@@ -8,6 +8,12 @@ function genpw {
     echo $(dd if=/dev/urandom count=1 2> /dev/null | uuencode -m - | sed -ne 2p | cut -c-24)
 }
 
+# Request sudo if required
+if [ $EUID != 0 ]; then
+    sudo "$0" "$@"
+    exit $?
+fi
+
 # Prompt user for domain
 #echo "This program will setup wordpress-lamps for one domain eg: yourdomain.com or yourdomain.co.uk"
 #echo -n "Enter you domain and then press [ENTER]: "
@@ -23,6 +29,23 @@ domain="systemsdesignauthority.co.uk"
 #    exit
 #fi
 
+# Ensure port fowarding is in place
+echo "Please refer to the port forwarding section of this blog"
+# port 80 for SCEP
+echo "HTTP port 80 needs to be forwarded to this server for certificate management"
+echo "Listening for http request to " $domain " from another public network, ie, a smartphone on a mobile network"
+tcpdump '(tcp[tcpflags] & tcp-syn != 0) and ((dst port 80) or (dst port 443))' -l | grep -o 'http: Flags \[S' &
+until [ "http: Flags [S)" ]
+do
+    sleep 10
+    echo "Listening for http"
+done
+echo "got it!"
+
+
+
+
+
 
 
 # Generate .env file
@@ -31,6 +54,10 @@ domain="systemsdesignauthority.co.uk"
 # echo "MYSQL_USER="$(genpw) >> .env
 # echo "MYSQL_PASSWORD="$(genpw) >> .env
 #echo "DOMAIN="$domain >> .env
+
+
+
+
 
 
 
