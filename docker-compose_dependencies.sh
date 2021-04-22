@@ -11,7 +11,7 @@ if [ $EUID != 0 ]; then
 fi
 
 # Welcome
-echo "docker-compose_dependencies.sh Ensure dependencies are met for docker-compose"
+echo "docker-compose_dependencies.sh | Ensure dependencies are met for docker-compose"
 echo "Please refer to systemdesignauthority.com/projects/wordpress-lemps for more information"
 
 # Update distrubution

@@ -10,11 +10,13 @@ if [ $EUID != 0 ]; then
 fi
 
 # Welcome
-echo "certbot_dependencies.sh Ensure dependencies are met for certbot"
+echo "certbot_dependencies.sh | Ensure dependencies are met for certbot"
 echo "Please refer to systemdesignauthority.com/projects/wordpress-lemps for more information"
-# Prompt user for domain
+# Prompt user for domain and save in enviroment file
 echo -n "Please enter you domain (eg: yourdomain.com or yourdomain.co.uk) and then press [ENTER]: "
 read domain
+rm -f .env
+echo "DOMAIN="$domain >> .env
 
 # Ensure given domain is resolving to this computer's public IP
 thisPublicIP=$(dig @resolver4.opendns.com myip.opendns.com +short)
