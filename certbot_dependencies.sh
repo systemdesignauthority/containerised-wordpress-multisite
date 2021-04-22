@@ -66,5 +66,5 @@ kill $!
 rm -f _443-out
 echo "Success! Port forwarding working OK for port 443"
 
-#confirm
+#close
 echo "Dependencies are met for certbot"

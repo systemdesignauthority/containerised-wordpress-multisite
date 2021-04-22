@@ -10,6 +10,10 @@ if [ $EUID != 0 ]; then
     exit $?
 fi
 
+# Welcome
+echo "docker-compose_dependencies.sh Ensure dependencies are met for docker-compose"
+echo "Please refer to systemdesignauthority.com/projects/wordpress-lemps for more information"
+
 # Update distrubution
 echo "Updating..."
 sudo apt update -y
@@ -47,14 +51,8 @@ if [[ $(lsb_release -is) == "Ubuntu" && $(lsb_release -rs) == "20.04" ]]; then
         fi
     done
 else
-    echo " "
-    echo "Distribution not detected"
-    echo "Please manually install the prerequisites for docker-compose"
-    echo " " 
-    echo "docker"
-    echo "https://www.google.com/search?q=how+to+install+docker+site%3Awww.digitalocean.com"
-    echo " "
-    echo "docker-compose"
-    echo "https://www.google.com/search?q=how+to+install+docker-compose+site%3Awww.digitalocean.com"
+    echo "Distribution not detected. Please see the prerequisites for docker-compose section at systemdesignauthority.com/projects/wordpress-lemps. Setup cannot continue."
 fi
 
+#close  
+echo "Dependencies are met for docker-compose"
