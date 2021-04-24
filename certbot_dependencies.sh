@@ -29,18 +29,19 @@ fi
 
 # Ensure port fowarding is in place
 # port 80 for SCEP
-echo "Listening for http (port 80) at" $domain "from another public network, ie, a smartphone on a mobile network"
+echo "Listening for port 80 at" $domain "from another public network, ie, a smartphone on a mobile network"
+rm -f _80-out
 touch _80-out
 tcpdump -i any dst port 80 -vvv -l > _80-out 2>&1 &
 i=0
-until [ "$(cat _80-out | grep $domain)" ]
+until [ "$(cat _80-out | grep http)" ]
 do
     sleep 1
     echo -n "."
     ((i++))
     if [ $i = 60 ]; then
        echo " "
-       echo "Nothing received on http (port 80) for 60 seconds. Please see the port forwarding section at systemdesignauthority.com/projects/wordpress-lemps. Setup cannot continue."
+       echo "Nothing received on port 80 for 60 seconds. Please see the port forwarding section at systemdesignauthority.com/projects/wordpress-lemps. Setup cannot continue."
        exit
     fi
 done
@@ -49,7 +50,8 @@ rm -f _80-out
 echo "Success! Port forwarding working OK for port 80"
 
 #port 443 for https
-echo "Listening for https (port 443) at" $domain "from another public network, ie, a smartphone on a mobile network"
+echo "Listening for port 443 at" $domain "from another public network, ie, a smartphone on a mobile network"
+rm -f _443-out
 touch _443-out
 tcpdump -i any dst port 443 -l > _443-out 2>&1 &
 i=0
@@ -60,7 +62,7 @@ do
     ((i++))
     if [ $i = 60 ]; then
        echo " "
-       echo "Nothing received on https (port 443) for 60 seconds. Please see the port forwarding section at systemdesignauthority.com/projects/wordpress-lemps. Setup cannot continue."
+       echo "Nothing received on port 443 for 60 seconds. Please see the port forwarding section at systemdesignauthority.com/projects/wordpress-lemps. Setup cannot continue."
        exit
     fi
 done

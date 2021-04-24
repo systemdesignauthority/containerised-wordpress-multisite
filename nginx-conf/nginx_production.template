@@ -2,7 +2,7 @@ server {
         listen 80;
         listen [::]:80;
 
-        server_name systemdesignauthority.co.uk www.systemdesignauthority.co.uk;
+        server_name this_domain www.this_domain;
 
         root /var/www/html;
 
@@ -19,7 +19,7 @@ server {
 server {
         listen 443 ssl http2;
         listen [::]:443 ssl http2;
-	server_name systemdesignauthority.co.uk www.systemdesignauthority.co.uk;
+	server_name this_domain www.this_domain;
 
         index index.php index.html index.htm;
 
@@ -27,8 +27,8 @@ server {
 
         server_tokens off;
 
-        ssl_certificate /etc/letsencrypt/live/systemdesignauthority.co.uk/fullchain.pem;
-        ssl_certificate_key /etc/letsencrypt/live/systemdesignauthority.co.uk/privkey.pem;
+        ssl_certificate /etc/letsencrypt/live/this_domain/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/this_domain/privkey.pem;
 
         include /etc/nginx/conf.d/options-ssl-nginx.conf;
 
