@@ -43,7 +43,7 @@ do
     if [ $i = 60 ]; then
        echo " "
        echo "wordpress-lemps installation failed. Please see systemdesignauthority.com/projects/wordpress-lemps. Setup cannot continue."
-       exit
+       exit 1
     fi
 done
 

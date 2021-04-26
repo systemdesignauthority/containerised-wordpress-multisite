@@ -39,6 +39,7 @@ services:
     restart: unless-stopped
     ports:
       - "80:80"
+      - "443:443"
     volumes:
       - wordpress:/var/www/html
       - ./nginx-conf:/etc/nginx/conf.d
@@ -54,7 +55,7 @@ services:
     volumes:
       - certbot-etc:/etc/letsencrypt
       - wordpress:/var/www/html
-    command: certonly --webroot --webroot-path=/var/www/html --email admin@systemdesignauthority.co.uk --agree-tos --no-eff-email --staging -d systemdesignauthority.co.uk -d www.systemdesignauthority.co.uk
+    command: certonly --webroot --webroot-path=/var/www/html --email admin@leeandsonslawns.co.uk --agree-tos --no-eff-email --force-renewal -d leeandsonslawns.co.uk -d www.leeandsonslawns.co.uk
 
 volumes:
   certbot-etc:

@@ -46,7 +46,7 @@ do
     if [ $i = 60 ]; then
        echo " "
        echo "Certificate installation failed. Please see the certificate installation section at systemdesignauthority.com/projects/wordpress-lemps. Setup cannot continue."
-       exit
+       exit 1
     fi
 done
 # Install production certificates
@@ -64,17 +64,17 @@ do
     if [ $i = 60 ]; then
        echo " "
        echo "Certificate installation failed. Please see the certificate installation section at systemdesignauthority.com/projects/wordpress-lemps. Setup cannot continue."
-       exit
+       exit 1
     fi
     if [ "$(docker-compose logs certbot | grep 'There were too many requests of a given type')" ]; then
        echo " "
        echo "Certificate installation rate-limited. Please see https://letsencrypt.org/docs/rate-limits. Setup cannot continue."
-       exit
+       exit 1
     fi
 done
 
 # Create cron for certificate renewal
-(crontab -l ; echo "0 4 * * 6 ~/wordpress-lemps/certificate_renew.sh >> /var/log/cron.log 2>&1") | sort - | uniq - | crontab -
+(crontab -l -u "$USER" 2>&1 ; echo "0 4 * * 6 ~/wordpress-lemps/certificate_renew.sh >> /var/log/cron.log 2>&1") | sort - | uniq - | crontab -
 
 #close
 echo "Certificate successfully installed"

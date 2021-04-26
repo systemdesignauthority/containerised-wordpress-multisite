@@ -19,6 +19,7 @@ rm -f .env
 echo "DOMAIN="$domain >> .env
 
 # Ensure given domain is resolving to this computer's public IP
+systemd-resolve - -flush-caches
 thisPublicIP=$(dig @resolver4.opendns.com myip.opendns.com +short)
 thisDomainARecord=$(dig +short $domain)
 if [ "$thisPublicIP" != "$thisDomainARecord" ]

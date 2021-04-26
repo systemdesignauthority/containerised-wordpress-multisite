@@ -52,6 +52,7 @@ if [[ $(lsb_release -is) == "Ubuntu" && $(lsb_release -rs) == "20.04" ]]; then
     done
 else
     echo "Distribution not detected. Please see the prerequisites for docker-compose section at systemdesignauthority.com/projects/wordpress-lemps. Setup cannot continue."
+    exit 1
 fi
 
 #close  

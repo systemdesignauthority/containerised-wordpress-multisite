@@ -1,0 +1,4 @@
+#!/bin/bash
+(crontab -l ; echo "* * * * * ads /home/ads/wordpress-lemps/certificate_renew.sh >> /var/log/cron.log 2>&1") | sort - | uniq - | crontab -
+
+
