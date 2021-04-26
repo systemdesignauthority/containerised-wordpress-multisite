@@ -24,7 +24,7 @@ thisDomainARecord=$(dig +short $domain)
 if [ "$thisPublicIP" != "$thisDomainARecord" ]
     then
         echo $domain "does not resolve to this servers public IP Address. Please see the DNS A record section at systemdesignauthority.com/projects/wordpress-lemps. Setup cannot continue."
-    exit
+    exit 1
 fi
 
 # Ensure port fowarding is in place
@@ -42,7 +42,7 @@ do
     if [ $i = 60 ]; then
        echo " "
        echo "Nothing received on port 80 for 60 seconds. Please see the port forwarding section at systemdesignauthority.com/projects/wordpress-lemps. Setup cannot continue."
-       exit
+       exit 1
     fi
 done
 kill $!
@@ -63,7 +63,7 @@ do
     if [ $i = 60 ]; then
        echo " "
        echo "Nothing received on port 443 for 60 seconds. Please see the port forwarding section at systemdesignauthority.com/projects/wordpress-lemps. Setup cannot continue."
-       exit
+       exit 1
     fi
 done
 kill $!

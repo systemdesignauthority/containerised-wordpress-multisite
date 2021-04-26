@@ -7,13 +7,16 @@
 # Playbook
 # Install all required dependencies for docker-compose
 ./docker-compose_dependencies.sh
-#[ $? -eq 0 ] && : || echo "Installation failed. Please see systemdesignauthority.com/projects/wordpress-lemps. Setup cannot continue." exit
+[ $? -eq 0 ] && : || exit 1
+
 # Ensure dependencies are met for certbot
 ./certbot_dependencies.sh
-#[ $? -eq 0 ] && : || echo "Installation failed. Please see systemdesignauthority.com/projects/wordpress-lemps. Setup cannot continue." exit
+[ $? -eq 0 ] && : || exit 1
+
 # Install certificate
 ./certificate_install.sh
-#[ $? -eq 0 ] && : || echo "Installation failed. Please see systemdesignauthority.com/projects/wordpress-lemps. Setup cannot continue." exit
-./production_install.sh
+[ $? -eq 0 ] && : || exit 1
 
-./certificate_renew.sh
+# Install mysql, wordpress, webserver, certbot for production
+./production_install.sh
+[ $? -eq 0 ] && : || exit 1

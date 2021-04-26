@@ -1,5 +1,5 @@
 #!/bin/bash
-# Install mysql, wordpress, webserver, certbot and chron for production
+# Install mysql, wordpress, webserver, certbot for production
 # systemdesignauthority.com
 # 23-04-2021
 # Version 1
