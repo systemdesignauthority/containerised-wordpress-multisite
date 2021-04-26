@@ -16,4 +16,4 @@
 #[ $? -eq 0 ] && : || echo "Installation failed. Please see systemdesignauthority.com/projects/wordpress-lemps. Setup cannot continue." exit
 ./production_install.sh
 
-./ssl_renew.sh
+./certificate_renew.sh
