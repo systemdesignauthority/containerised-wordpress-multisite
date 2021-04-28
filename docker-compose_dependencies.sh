@@ -37,7 +37,7 @@ if [[ $(lsb_release -is) == "Ubuntu" && $(lsb_release -rs) == "20.04" ]]; then
             echo "No $REQUIRED_PKG. Installing $REQUIRED_PKG for" $(lsb_release -is) $(lsb_release -rs)
             if [[ REQUIRED_PKG = "docker-ce" ]]
             then
-                curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+                curl -4fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
                 sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
                 sudo apt-get update -y
                 sudo apt-get --yes install $REQUIRED_PKG

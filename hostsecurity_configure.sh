@@ -66,6 +66,12 @@ for domain in $(cat /etc/apt/sources.list | grep -Eo '(http|https)://[^/"]+' | s
    sudo iptables -A INPUT -i $eth -s $domain -d $ip -m state --state RELATED,ESTABLISHED -j ACCEPT
 done
 
+# Allow project updates and nginx security parameters
+sudo iptables -A OUTPUT -s $ip -d github.com -j ACCEPT
+sudo iptables -A INPUT -i $eth -s github.com -d $ip -m state --state RELATED,ESTABLISHED -j ACCEPT
+sudo iptables -A OUTPUT -s $ip -d raw.githubusercontent.com -j ACCEPT
+sudo iptables -A INPUT -i $eth -s raw.githubusercontent.com -d $ip -m state --state RELATED,ESTABLISHED -j ACCEPT
+
 # Allow DNS
 sudo iptables -A OUTPUT -s $ip -d $dns1 -p udp --dport 53 -m state --state NEW,ESTABLISHED -j ACCEPT
 sudo iptables -A OUTPUT -s $ip -d $dns2 -p udp --dport 53 -m state --state NEW,ESTABLISHED -j ACCEPT
@@ -81,8 +87,21 @@ sudo iptables -P INPUT DROP
 sudo iptables -P FORWARD DROP
 sudo iptables -P OUTPUT DROP
 
+# Lockdown IPv6
+ipt6="/sbin/ip6tables"
+$ipt6 -F
+$ipt6 -X 
+$ipt6 -Z
+$ipt6 -P INPUT DROP
+$ipt6 -P FORWARD DROP
+$ipt6 -P OUTPUT DROP
+
 # cron for security updates
 (crontab -l -u "$USER" 2>&1 ; echo "0 4 * * 6 ~/wordpress-lemps/certificate_renew.sh >> /var/log/cron.log 2>&1") | sort - | uniq - | crontab -
 
 # Save
 sudo /sbin/iptables-save
+sudo /sbin/ip6tables-save
+
+# monitor
+# sudo watch -n 2 -d iptables -nvL
