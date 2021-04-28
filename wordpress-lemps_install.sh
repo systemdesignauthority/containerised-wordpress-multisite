@@ -5,6 +5,11 @@
 # Version 1
 
 # Playbook
+
+# Configure host security
+./hostsecurity_configure.sh
+[ $? -eq 0 ] && : || exit 1
+
 # Install all required dependencies for docker-compose
 ./docker-compose_dependencies.sh
 [ $? -eq 0 ] && : || exit 1
@@ -20,3 +25,4 @@
 # Install mysql, wordpress, webserver, certbot for production
 ./production_install.sh
 [ $? -eq 0 ] && : || exit 1
+
