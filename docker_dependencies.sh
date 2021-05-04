@@ -1,5 +1,5 @@
 #!/bin/bash
-# Install all required dependencies for docker-compose
+# Install all required dependencies for docker
 # systemdesignauthority.com
 # 10-04-2021
 # Version 1
@@ -11,8 +11,8 @@ if [ $EUID != 0 ]; then
 fi
 
 # Welcome
-echo "docker-compose_dependencies.sh | Ensure dependencies are met for docker-compose"
-echo "Please refer to systemdesignauthority.com/projects/wordpress-lemps for more information"
+echo "docker_dependencies.sh | Ensure dependencies are met for docker"
+echo "Please refer to systemdesignauthority.com/projects/containerised-wordpress-multisite for more information"
 
 # Update distrubution
 echo "Updating..."
@@ -51,9 +51,9 @@ if [[ $(lsb_release -is) == "Ubuntu" && $(lsb_release -rs) == "20.04" ]]; then
         fi
     done
 else
-    echo "Distribution not detected. Please see the prerequisites for docker-compose section at systemdesignauthority.com/projects/wordpress-lemps. Setup cannot continue."
+    echo "Distribution not detected. Please install dependencies manually. Setup cannot continue."
     exit 1
 fi
 
 #close  
-echo "Dependencies are met for docker-compose"
+echo "Dependencies are met for docker"
