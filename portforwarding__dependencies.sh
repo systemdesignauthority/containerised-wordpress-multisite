@@ -1,5 +1,5 @@
 #!/bin/bash
-# Ensure dependencies are met for certbot
+# Check Port Forwarding for http and https
 # systemdesignauthority.com
 # 21-04-2021
 # Version 1
@@ -10,9 +10,9 @@ if [ $EUID != 0 ]; then
 fi
 
 # Welcome
-echo "certbot_dependencies.sh | Ensure dependencies are met for certbot"
-echo "Please refer to systemdesignauthority.com/projects/wordpress-lemps for more information"
-# Prompt user for domain and save in enviroment file
+echo "Check Port Forwarding for http and https"
+echo "Please refer to systemdesignauthority.com/projects/containerised-wordpress-multisite for more information"
+# Prompt user for domain
 echo -n "Please enter you domain (eg: yourdomain.com or yourdomain.co.uk) and then press [ENTER]: "
 read domain
 rm -f .env
@@ -24,7 +24,7 @@ thisPublicIP=$(dig @resolver4.opendns.com myip.opendns.com +short)
 thisDomainARecord=$(dig +short $domain)
 if [ "$thisPublicIP" != "$thisDomainARecord" ]
     then
-        echo $domain "does not resolve to this servers public IP Address. Please see the DNS A record section at systemdesignauthority.com/projects/wordpress-lemps. Setup cannot continue."
+        echo $domain "does not resolve to this servers public IP Address. Please see the DNS A record section at systemdesignauthority.com/projects/containerised-wordpress-multisite. Setup cannot continue."
     exit 1
 fi
 
@@ -42,7 +42,7 @@ do
     ((i++))
     if [ $i = 60 ]; then
        echo " "
-       echo "Nothing received on port 80 for 60 seconds. Please see the port forwarding section at systemdesignauthority.com/projects/wordpress-lemps. Setup cannot continue."
+       echo "Nothing received on port 80 for 60 seconds. Please see the port forwarding section at systemdesignauthority.com/projects/containerised-wordpress-multisite. Setup cannot continue."
        exit 1
     fi
 done
@@ -63,7 +63,7 @@ do
     ((i++))
     if [ $i = 60 ]; then
        echo " "
-       echo "Nothing received on port 443 for 60 seconds. Please see the port forwarding section at systemdesignauthority.com/projects/wordpress-lemps. Setup cannot continue."
+       echo "Nothing received on port 443 for 60 seconds. Please see the port forwarding section at systemdesignauthority.com/projects/containerised-wordpress-multisite. Setup cannot continue."
        exit 1
     fi
 done
@@ -72,4 +72,4 @@ rm -f _443-out
 echo "Success! Port forwarding working OK for port 443"
 
 #close
-echo "Dependencies are met for certbot"
+echo "Dependencies are met for containerised-wordpress-multisite"
