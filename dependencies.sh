@@ -1,5 +1,5 @@
 #!/bin/bash
-# Install all required dependencies for docker
+# Install all required dependencies
 # systemdesignauthority.com
 # 10-04-2021
 # Version 1
@@ -11,7 +11,7 @@ if [ $EUID != 0 ]; then
 fi
 
 # Welcome
-echo "docker_dependencies.sh | Ensure dependencies are met for docker"
+echo "dependencies.sh | Ensure dependencies are met"
 echo "Please refer to systemdesignauthority.com/projects/containerised-wordpress-multisite for more information"
 
 # Update distrubution
@@ -56,4 +56,4 @@ else
 fi
 
 #close  
-echo "Dependencies are met for docker"
+echo "Dependencies are met"

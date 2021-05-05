@@ -11,7 +11,7 @@ if [ $EUID != 0 ]; then
 fi
 
 # Welcome
-echo "hostsecurity_configure.sh | Configure host security"
+echo "hostsecurity.sh | Configure host security"
 echo "Please refer to systemdesignauthority.com/projects/wordpress-lemps for more information"
 
 # Get server info
@@ -32,6 +32,10 @@ ip=$(ip route get $dns1 | grep -oP '(?<=src )[^ ]*')
 echo "Please enter ssh client IP address (eg 192.168.0.200) or leave blank, then press [Enter]"
 read ssh
 good_ssh="$( echo $ssh | grep -E -o '(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)' )"
+#rsync client for backing up this ssh server
+echo "Please enter rsync IP address (eg 192.168.0.234) or leave blank, then press [Enter]"
+read rsync
+good_rsync="$( echo $rsync | grep -E -o '(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)' )"
 #local LAN subnet
 echo "Please enter local subnet IP address and mask (eg 192.168.0.0/24), then press [Enter]"
 read subnet
@@ -56,6 +60,10 @@ sudo iptables -A OUTPUT -o lo -s 127.0.0.0/8 -d 127.0.0.0/8 -j ACCEPT
 [ -z "$good_ssh" ] && : || sudo iptables -A INPUT -i $eth -p tcp -s $ssh -d $ip --dport 22 -j ACCEPT
 [ -z "$good_ssh" ] && : || sudo iptables -A OUTPUT -p tcp -s $ip -d $ssh --sport 22 -j ACCEPT
 
+# Allow rsync to a specific host on the LAN
+[ -z "$good_rsync" ] && : || sudo iptables -A INPUT -i $eth -p tcp -s $rsync -d $ip --sport 445 -j ACCEPT
+[ -z "$good_rsync" ] && : || sudo iptables -A OUTPUT -p tcp -s $ip -d $rsync --dport 445 -j ACCEPT
+
 # Drop all other LAN traffic
 sudo iptables -A INPUT -i $eth -s $subnet -d $subnet -j DROP
 sudo iptables -A OUTPUT -s $subnet -d $subnet -j DROP
@@ -65,12 +73,6 @@ for domain in $(cat /etc/apt/sources.list | grep -Eo '(http|https)://[^/"]+' | s
    sudo iptables -A OUTPUT -s $ip -d $domain -j ACCEPT
    sudo iptables -A INPUT -i $eth -s $domain -d $ip -m state --state RELATED,ESTABLISHED -j ACCEPT
 done
-
-# Allow project updates and nginx security parameters
-sudo iptables -A OUTPUT -s $ip -d github.com -j ACCEPT
-sudo iptables -A INPUT -i $eth -s github.com -d $ip -m state --state RELATED,ESTABLISHED -j ACCEPT
-sudo iptables -A OUTPUT -s $ip -d raw.githubusercontent.com -j ACCEPT
-sudo iptables -A INPUT -i $eth -s raw.githubusercontent.com -d $ip -m state --state RELATED,ESTABLISHED -j ACCEPT
 
 # Allow DNS
 sudo iptables -A OUTPUT -s $ip -d $dns1 -p udp --dport 53 -m state --state NEW,ESTABLISHED -j ACCEPT
