@@ -99,7 +99,10 @@ $ipt6 -P FORWARD DROP
 $ipt6 -P OUTPUT DROP
 
 # cron for security updates
-(crontab -l -u "$USER" 2>&1 ; echo "0 4 * * 6 ~/wordpress-lemps/certificate_renew.sh >> /var/log/cron.log 2>&1") | sort - | uniq - | crontab -
+crontab -l > mycron
+echo "0 2 * * 1-7 sudo apt update && sudo apt upgrade" >> mycron
+crontab mycron
+rm mycron
 
 # Save
 sudo /sbin/iptables-save
