@@ -39,7 +39,7 @@ for container in $(docker ps | grep -v CONTAINER | grep -v ID | cut -c-12) ; do
 done
 
 # Check NAS is mounted
-sudo mount -t cifs -o user=curtis,pass=qtrclam767,vers=1.0 //192.168.0.234/privateStorage /media/privatestorage
+sudo mount -t cifs -o user=******,pass=****************,vers=1.0 //192.168.0.234/privateStorage /media/privatestorage
 
 # Backup to NAS
 sudo rsync --remove-source-files -a /backup /media/privatestorage/docker-host-backup
