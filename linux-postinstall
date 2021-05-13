@@ -1,7 +1,9 @@
-#run these commands on the host before bringing up the containers using docker-compose up -d, as shown in the video
+#run these commands on the host before bringing up the containers using docker-compose up -d>
 sudo groupadd docker
 sudo usermod -aG docker $USER
 sudo chown "$USER":"$USER" /home/"$USER"/.docker -R
 sudo chmod g+rwx "$HOME/.docker" -R
 docker run hello-world
 docker pull ubuntu
+docker network create webproxy
+
